@@ -76,4 +76,83 @@ void __fastcall TFormMain::FormCreate(TObject *Sender)
 PretreatmentImage->AutoSize = true;
 }
 //---------------------------------------------------------------------------
+typedef unsigned char imageInt; //тип пикселей полутонового изображения - 8 бит без знака = 0..255
+// Определение порога методом Отсу
+int otsuThreshold(imageInt *image, int size)
+{
+  // Посчитаем минимальную и максимальную яркость всех пикселей
+  int min = image[0];
+  int max = image[0];
 
+  for (int i = 1; i < size; i++)
+  {
+    int value = image[i];
+
+    if (value < min)
+      min = value;
+
+    if (value > max)
+      max = value;
+  }
+
+  // Гистограмма будет ограничена снизу и сверху значениями min и max,
+  // поэтому нет смысла создавать гистограмму размером 256 элементов
+  int histSize = max - min + 1;
+  int* hist = new int[histSize];
+
+  // Заполним гистограмму нулями
+  for (int t = 0; t < histSize; t++)
+    hist[t] = 0;
+
+  //вычислим высоту элементов гистограммы
+  for (int i = 0; i < size; i++)
+    hist[image[i] - min]++;
+
+  // два вспомогательных числа:
+  int m = 0; // m - сумма высот всех элементов гистограммы, домноженных на положение их середины
+  int n = 0; // n - сумма высот всех элементов гистограммы
+  for (int t = 0; t <= max - min; t++)
+  {
+    m += t * hist[t];
+    n += hist[t];
+  }
+
+  float maxSigma = -1; // Максимальное значение межклассовой дисперсии
+  int threshold = 0; // Порог, соответствующий maxSigma
+
+  int alpha1 = 0; // Сумма высот всех элементов гистограммы для класса 1
+  int beta1 = 0; // Сумма высот всех элементов гистограммы для класса 1, домноженных на положение их середины
+
+  // Переменная alpha2 не нужна, т.к. она равна m - alpha1
+  // Переменная beta2 не нужна, т.к. она равна n - alpha1
+
+  // t пробегается по всем возможным значениям порога
+  for (int t = 0; t < max - min; t++)
+  {
+    alpha1 += t * hist[t];
+    beta1 += hist[t];
+
+    // Считаем вероятность класса 1.
+    float w1 = (float)beta1 / n;
+    //w2 не нужна, т.к. она равна 1 - w1
+
+    // a = a1 - a2, где a1, a2 - средние арифметические для классов 1 и 2
+    float a = (float)alpha1 / beta1 - (float)(m - alpha1) / (n - beta1);
+
+    // считаем sigma
+    float sigma = w1 * (1 - w1) * a * a;
+
+    // Если sigma больше текущей максимальной, то обновляем maxSigma и порог
+    if (sigma > maxSigma)
+    {
+      maxSigma = sigma;
+      threshold = t;
+    }
+  }
+
+  //порог отсчитывался от min, а не от нуля
+  threshold += min;
+
+  //порог посчитан, возвращаем его
+  return threshold;
+}

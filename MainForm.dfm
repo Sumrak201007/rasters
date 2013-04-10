@@ -95,6 +95,7 @@ object FormMain: TFormMain
           Height = 25
           Caption = #1041#1080#1085#1072#1088#1080#1079#1072#1094#1080#1103
           TabOrder = 0
+          OnClick = BinarizeButtonClick
         end
       end
     end

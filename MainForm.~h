@@ -36,6 +36,7 @@ __published:	// IDE-managed Components
         TImage *PretreatmentImage;
         TGroupBox *Save_LoadGroupBox;
         TGroupBox *PretreatmentProcessingGroupBox;
+        TButton *BinarizeButton;
         void __fastcall OpenPictureButtonClick(TObject *Sender);
         void __fastcall ImageToDBButtonClick(TObject *Sender);
         void __fastcall ImageFromDBButtonClick(TObject *Sender);
