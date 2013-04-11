@@ -78,15 +78,15 @@ int otsuThreshold(unsigned char *image, int size)
   //порог посчитан, возвращаем его
   return threshold;
 }
-//------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+
 void __fastcall TFormMain::OpenPictureButtonClick(TObject *Sender)
 {
-OpenPictureDialog1->Execute();
-Graphics::TBitmap* raster = new Graphics::TBitmap();
-raster->LoadFromFile(OpenPictureDialog1->FileName);
-PretreatmentImage->Picture->Bitmap->Assign(raster);
+  OpenPictureDialog1->Execute();
+  Graphics::TBitmap* raster = new Graphics::TBitmap();
+  raster->LoadFromFile(OpenPictureDialog1->FileName);
+  PretreatmentImage->Picture->Bitmap->Assign(raster);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormMain::ImageToDBButtonClick(TObject *Sender)
@@ -110,11 +110,10 @@ Int max_id = StrToInt(DataSource1->DataSet->);
 //---------------------------------------------------------------------------
 void __fastcall TFormMain::ImageFromDBButtonClick(TObject *Sender)
 {
+  IBQuery1->SQL->Clear();
+  IBQuery1->SQL->Add("SELECT IMAGE FROM IMAGE_WITHOUT_PRETREATMENT WHERE ID='"+Edit1->Text+"'");
 
-IBQuery1->SQL->Clear();
-IBQuery1->SQL->Add("SELECT IMAGE FROM IMAGE_WITHOUT_PRETREATMENT WHERE ID='"+Edit1->Text+"'");
-
-IBQuery1->Open();
+  IBQuery1->Open();
    if(!IBQuery1->FieldByName("IMAGE")->IsNull){
         TStream *B1 = IBQuery1->CreateBlobStream(IBQuery1->FieldByName("IMAGE"), bmRead);
         TMemoryStream *M1 = new TMemoryStream();
@@ -131,13 +130,6 @@ IBQuery1->Open();
 }
 }
 //---------------------------------------------------------------------------
-
-
-
-
-
-
-
 void __fastcall TFormMain::FormCreate(TObject *Sender)
 {
 PretreatmentImage->AutoSize = true;
@@ -149,19 +141,12 @@ typedef unsigned char imageInt; //тип пикселей полутонового изображения - 8 бит 
 void __fastcall TFormMain::BinarizeButtonClick(TObject *Sender)
 {
   Graphics::TBitmap *b = PretreatmentImage->Picture->Bitmap;
-my_pict = new unsigned char [b->Width*b->Height];
-for (int i=0;i<=b->Width-1;i++)
-for (int j=0;j<=b->Height-1;j++)
-
-/*my_pict[i*b->Width+j]=byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]);
-for(int i=0; i<256; i++) g[i]=0;
-for(int i=0; i<b->Width-1; i++)  */
-
-//for(int j=0; j<b->Height-1; j++)  g[byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j])]++;
+  my_pict = new unsigned char [b->Width*b->Height];
+  for (int i=0;i<=b->Width-1;i++)
+      for (int j=0;j<=b->Height-1;j++)
 
 
   PretreatmentImage->Picture->Bitmap->Assign(PretreatmentImage->Picture->Bitmap);
-  //Graphics::TBitmap *b = PretreatmentImage->Picture->Bitmap;
   int porog = otsuThreshold(my_pict,b->Width*b->Height);
   for (int i=0;i<=PretreatmentImage->Width-1;i++)
   for (int j=0;j<=PretreatmentImage->Height-1;j++)
@@ -185,7 +170,6 @@ void __fastcall TFormMain::Button1Click(TObject *Sender)
     PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clBlack;
   else
     PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
-
-}
+  }
 //---------------------------------------------------------------------------
 
