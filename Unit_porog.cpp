@@ -14,8 +14,9 @@ __fastcall TPorog_form::TPorog_form(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TPorog_form::Button1Click(TObject *Sender)
+void __fastcall TPorog_form::BinarizeNowButtonClick(TObject *Sender)
 {
   Close();        
 }
 //---------------------------------------------------------------------------
+
