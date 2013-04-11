@@ -4,10 +4,12 @@
 #pragma hdrstop
 
 #include "MainForm.h"
+#include "Unit_porog.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFormMain *FormMain;
+TPorog_form *Porog_form;
 unsigned char *my_pict;
 //---------------------------------------------------------------------------
 __fastcall TFormMain::TFormMain(TComponent* Owner)
@@ -170,4 +172,20 @@ for(int i=0; i<b->Width-1; i++)  */
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TFormMain::Button1Click(TObject *Sender)
+{
+  PretreatmentImage->Picture->Bitmap->Assign(PretreatmentImage->Picture->Bitmap);
+  int porog;
+  Porog_form->ShowModal();
+  porog=StrToInt(Porog_form->Edit1->Text);
+  for (int i=0;i<=PretreatmentImage->Width-1;i++)
+  for (int j=0;j<=PretreatmentImage->Height-1;j++)
+  if (byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j])<=porog)
+    PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clBlack;
+  else
+    PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
+
+}
+//---------------------------------------------------------------------------
 
