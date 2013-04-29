@@ -160,15 +160,37 @@ void __fastcall TFormMain::BinarizeButtonClick(TObject *Sender)
 
 void __fastcall TFormMain::Button1Click(TObject *Sender)
 {
+  Porog_form->MinPorogEdit->Visible = false;
   PretreatmentImage->Picture->Bitmap->Assign(PretreatmentImage->Picture->Bitmap);
   int porog;
   Porog_form->ShowModal();
-  porog=StrToInt(Porog_form->Edit1->Text);
+  porog=StrToInt(Porog_form->MaxPorogEdit->Text);
   for (int i=0;i<=PretreatmentImage->Width-1;i++)
   for (int j=0;j<=PretreatmentImage->Height-1;j++)
   if (byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j])<=porog)
     PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clBlack;
   else
+    PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
+  }
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::FindColorButtonClick(TObject *Sender)
+{
+  Porog_form->MinPorogEdit->Visible = true;
+  PretreatmentImage->Picture->Bitmap->Assign(PretreatmentImage->Picture->Bitmap);
+  int porog,porog_min;
+  Porog_form->ShowModal();
+  porog=StrToInt(Porog_form->MaxPorogEdit->Text);
+  porog_min = StrToInt(Porog_form->MinPorogEdit->Text);
+  for (int i=0;i<=PretreatmentImage->Width-1;i++)
+  for (int j=0;j<=PretreatmentImage->Height-1;j++)
+  if (byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j])<=porog)
+  {if (byte(PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j])>=porog_min)
+  PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clBlack;
+  else
+    PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
+  }
+    else
     PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
   }
 //---------------------------------------------------------------------------

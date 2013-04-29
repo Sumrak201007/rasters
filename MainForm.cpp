@@ -5,6 +5,7 @@
 
 #include "MainForm.h"
 #include "Unit_porog.h"
+#include "myclasses.cpp"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -193,5 +194,51 @@ void __fastcall TFormMain::FindColorButtonClick(TObject *Sender)
     else
     PretreatmentImage->Picture->Bitmap->Canvas->Pixels[i][j]=clWhite;
   }
+//---------------------------------------------------------------------------
+ int sort_function( const void* a, const void* b)
+{
+   return( strcmp( (unsigned char *)a,(unsigned char *)b) ); 
+}
+
+
+void __fastcall TFormMain::FiltrationButtonClick(TObject *Sender)
+{
+  unsigned char *pict[3], mas[11];
+ float d;
+ for (int i = 0; i<PretreatmentImage->Picture->Height - 2; i++){
+     Application->ProcessMessages();
+     pict[0] = (unsigned char*) PretreatmentImage->Picture->Bitmap->ScanLine[i];
+     pict[1] = (unsigned char*) PretreatmentImage->Picture->Bitmap->ScanLine[i+1];
+     pict[2] = (unsigned char*) PretreatmentImage->Picture->Bitmap->ScanLine[i+2];
+     for (int j=1; j<PretreatmentImage->Picture->Width - 1 ; j++){
+         
+         mas[0] = 0;
+         mas[1] = pict[0][j*3-3];  mas[4] = pict[1][j*3-3];  mas[7] = pict[2][j*3-3];
+         mas[2] = pict[0][j*3];    mas[5] = pict[1][j*3];    mas[8] = pict[2][j*3];
+         mas[3] = pict[0][j*3+3];  mas[6] = pict[1][j*3+3];  mas[9] = pict[2][j*3+3];
+         mas[10] = 255;
+         qsort( (void *)mas, 11, sizeof(mas[0]), sort_function);
+         pict[1][j*3] = (mas[4] + mas[5] + mas[6]) / 3;
+         mas[0] = 0;
+         mas[1] = pict[0][j*3-2];  mas[4] = pict[1][j*3-2];  mas[7] = pict[2][j*3-2];
+         mas[2] = pict[0][j*3+1];  mas[5] = pict[1][j*3+1];  mas[8] = pict[2][j*3+1];
+         mas[3] = pict[0][j*3+4];  mas[6] = pict[1][j*3+4];  mas[9] = pict[2][j*3+4];
+         mas[10] = 255;
+         qsort( (void *)mas, 11, sizeof(mas[0]), sort_function);
+         pict[1][j*3+1] = (mas[4] + mas[5] + mas[6]) / 3;
+         mas[0] = 0;
+         mas[1] = pict[0][j*3-1];  mas[4] = pict[1][j*3-1];  mas[7] = pict[2][j*3-1];
+         mas[2] = pict[0][j*3+2];  mas[5] = pict[1][j*3+2];  mas[8] = pict[2][j*3+2];
+         mas[3] = pict[0][j*3+5];  mas[6] = pict[1][j*3+5];  mas[9] = pict[2][j*3+5];
+         mas[10] = 255;
+         qsort( (void *)mas, 11, sizeof(mas[0]), sort_function);
+         pict[1][j*3+2] = (mas[4] + mas[5] + mas[6]) / 3;
+     }
+//     Image1->Refresh();
+ }
+ PretreatmentImage->Refresh();
+
+ ShowMessage("Обработка завершена");
+}
 //---------------------------------------------------------------------------
 

@@ -85,7 +85,7 @@ object FormMain: TFormMain
         Left = 0
         Top = 152
         Width = 193
-        Height = 105
+        Height = 113
         Caption = #1055#1088#1077#1076#1074#1072#1088#1080#1090#1077#1083#1100#1085#1072#1103' '#1086#1073#1088#1072#1073#1086#1090#1082#1072
         TabOrder = 2
         object BinarizeButton: TButton
@@ -105,6 +105,15 @@ object FormMain: TFormMain
           Caption = #1041#1080#1085#1072#1088#1080#1079#1072#1094#1080#1103' ('#1088#1091#1095#1085#1072#1103')'
           TabOrder = 1
           OnClick = Button1Click
+        end
+        object FindColorButton: TButton
+          Left = 8
+          Top = 80
+          Width = 177
+          Height = 25
+          Caption = #1042#1099#1076#1077#1083#1077#1085#1080#1077
+          TabOrder = 2
+          OnClick = FindColorButtonClick
         end
       end
     end

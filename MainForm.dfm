@@ -1,6 +1,6 @@
 object FormMain: TFormMain
   Left = 290
-  Top = 122
+  Top = 134
   Width = 874
   Height = 505
   Caption = 'Merging raster'
@@ -85,7 +85,7 @@ object FormMain: TFormMain
         Left = 0
         Top = 152
         Width = 193
-        Height = 113
+        Height = 145
         Caption = #1055#1088#1077#1076#1074#1072#1088#1080#1090#1077#1083#1100#1085#1072#1103' '#1086#1073#1088#1072#1073#1086#1090#1082#1072
         TabOrder = 2
         object BinarizeButton: TButton
@@ -115,6 +115,15 @@ object FormMain: TFormMain
           TabOrder = 2
           OnClick = FindColorButtonClick
         end
+      end
+      object FiltrationButton: TButton
+        Left = 8
+        Top = 264
+        Width = 177
+        Height = 25
+        Caption = #1057#1075#1083#1072#1078#1080#1074#1072#1085#1080#1077
+        TabOrder = 3
+        OnClick = FiltrationButtonClick
       end
     end
   end

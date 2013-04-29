@@ -39,6 +39,7 @@ __published:	// IDE-managed Components
         TButton *BinarizeButton;
         TButton *Button1;
         TButton *FindColorButton;
+        TButton *FiltrationButton;
         void __fastcall OpenPictureButtonClick(TObject *Sender);
         void __fastcall ImageToDBButtonClick(TObject *Sender);
         void __fastcall ImageFromDBButtonClick(TObject *Sender);
@@ -46,6 +47,7 @@ __published:	// IDE-managed Components
         void __fastcall BinarizeButtonClick(TObject *Sender);
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall FindColorButtonClick(TObject *Sender);
+        void __fastcall FiltrationButtonClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TFormMain(TComponent* Owner);
